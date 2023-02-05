@@ -2,7 +2,7 @@
     'use strict';
 
     class Config {
-        static ModuleType = 1;
+        static ModuleType = 5;
         static FontName = "嗡阿吽－田英章钢笔楷书简";
         static Title = "田字格生成器";
         static Content = "使用设置功能自定义内容";
@@ -120,7 +120,8 @@
         }
 
         onUpdateConfig() {
-            Config.ModuleType = Number(this.getOptionElementValue("modelType"));
+            //Config.ModuleType = Number(this.getOptionElementValue("modelType"));
+            Config.ModuleType = 5;
             Config.FontName = "嗡阿吽－田英章钢笔楷书简";
             Config.Content = document.getElementById("inputContent").value;
             Config.Title = document.getElementById("inputTitle").value;
@@ -148,6 +149,7 @@
             let ulPrintContent = document.getElementById("printContent");
             ulPrintContent.innerHTML = '';
             console.log(inputContent);
+            $(document).attr("title",Config.Title);
 
             for (let i = 0; i < inputContent.length; i++) {
                 let curChar = inputContent[i];
@@ -226,7 +228,8 @@
                 hzSpan.innerText = curChar;
                 hzSpan.style.cssText = "background: url(img/bg" + Config.ZgType + Config.ZgColor + ".svg); ";
                 hzSpan.style.setProperty("color", Config.GetFontColor());
-
+                // TODO
+                // hzSpan.style.setProperty("font-family", "Microsoft YaHei");
                 hzLine.appendChild(hzSpan)
             }
             ulPrintContent.appendChild(hzLine)
