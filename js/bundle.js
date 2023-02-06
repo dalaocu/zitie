@@ -3,7 +3,8 @@
 
     class Config {
         static ModuleType = 5;
-        static FontName = "嗡阿吽－田英章钢笔楷书简";
+        static FontName = "1";
+        static fonts = ["", "楷体", "阿里妈妈东方大楷 Regular", "Kaiti SC", "Microsoft YaHei"];
         static Title = "田字格生成器";
         static Content = "使用设置功能自定义内容";
         static ZgType = "1";
@@ -20,7 +21,6 @@
             window.localStorage.setItem("FontName", Config.FontName);
             window.localStorage.setItem("Title", Config.Title);
             window.localStorage.setItem("Content", Config.Content);
-            window.localStorage.setItem("ZgColor", Config.ZgColor);
             window.localStorage.setItem("ZgColor", Config.ZgColor);
             window.localStorage.setItem("FontTransparent", Config.FontTransparent);
             window.localStorage.setItem("FontColor", Config.FontColor);
@@ -122,11 +122,11 @@
         onUpdateConfig() {
             //Config.ModuleType = Number(this.getOptionElementValue("modelType"));
             Config.ModuleType = 5;
-            Config.FontName = "嗡阿吽－田英章钢笔楷书简";
             Config.Content = document.getElementById("inputContent").value;
             Config.Title = document.getElementById("inputTitle").value;
             Config.ZgType = (this.getOptionElementValue("zgType"));
             Config.ZgColor = (this.getOptionElementValue("zgColor"));
+            Config.FontName = (this.getOptionElementValue("fontName"));
             Config.FontColor = (this.getOptionElementValue("fontColor"));
             Config.FontTransparent = this.mySlider.getValue();
         }
@@ -228,8 +228,9 @@
                 hzSpan.innerText = curChar;
                 hzSpan.style.cssText = "background: url(img/bg" + Config.ZgType + Config.ZgColor + ".svg); ";
                 hzSpan.style.setProperty("color", Config.GetFontColor());
-                // TODO
-                // hzSpan.style.setProperty("font-family", "Microsoft YaHei");
+                console.log(Config.FontName);
+                console.log(Config.fonts[Config.FontName]);
+                hzSpan.style.setProperty("font-family", Config.fonts[Config.FontName] );
                 hzLine.appendChild(hzSpan)
             }
             ulPrintContent.appendChild(hzLine)
@@ -264,6 +265,7 @@
         window.main.setOptionChecked("zgType", Config.ZgType || 1);
         window.main.setOptionChecked("zgColor", Config.ZgColor || 1);
         window.main.setOptionChecked("fontColor", Config.FontColor || "#FFB8B8");
+        window.main.setOptionChecked("fontName", Config.FontName || 1);
 
         window.main.setOptionChecked("mhColor", Config.FontTransparent || "0.3");
         window.main.settingPage.onUpdateConfig();
