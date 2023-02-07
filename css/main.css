@@ -123,6 +123,12 @@ li.hz-line span.b {
   cursor: pointer;
 }
 
+footer {
+  font-size: 10px;
+  color: rgb(118, 113, 113);
+  text-align: center;
+}
+
 @media print {
   .noprint {
     display: none;
@@ -132,6 +138,14 @@ li.hz-line span.b {
   }
   .page-head {
     display: block;
+  }
+  nav,
+  aside {
+    display: none;
+  }
+  footer {
+    position: fixed;
+    bottom: 0;
   }
 }
 

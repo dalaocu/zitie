@@ -5,7 +5,7 @@
         static ModuleType = 5;
         static FontName = "1";
         static fonts = ["", "楷体", "阿里妈妈东方大楷 Regular", "Kaiti SC", "Microsoft YaHei"];
-        static Title = "田字格生成器";
+        static Title = "自定义字帖";
         static Content = "使用设置功能自定义内容";
         static ZgType = "1";
         static ZgColor = "1";
@@ -40,7 +40,6 @@
 
     class SettingPage {
         divSetting;
-
         divOverlay;
         divContent;
         mySlider;
@@ -148,7 +147,12 @@
             let inputContent = Config.Content;
             let ulPrintContent = document.getElementById("printContent");
             ulPrintContent.innerHTML = '';
-            console.log(inputContent);
+            let title = document.createElement('h1');
+            title.textContent=Config.Title;
+            title.style.setProperty("text-align", "center");
+
+            ulPrintContent.appendChild(title);
+            // console.log(inputContent);
             $(document).attr("title",Config.Title);
 
             for (let i = 0; i < inputContent.length; i++) {
@@ -199,10 +203,8 @@
             let liTeachPy = document.createElement('span');
             liTeachPy.className = 'teach-line-py';
             liTeachPy.textContent = pinyinUtil.getPinyin(curChar, ' ', true, false);
-
             liTeach.appendChild(liTeachHz);
             liTeach.appendChild(liTeachPy);
-
 
             HanziWriter.loadCharacterData(curChar).then(function(charData) {
                 // console.log(charData);
@@ -210,7 +212,6 @@
                 for (var i = 0; i < charData.strokes.length; i++) {
                     let liTeachBs = document.createElement('span');
                     liTeachBs.className = 'teach-line-bs';
-
                     liTeach.appendChild(liTeachBs);
                     var strokesPortion = charData.strokes.slice(0, i + 1);
                     this.renderFanningStrokes(liTeachBs, strokesPortion);
@@ -266,11 +267,9 @@
         window.main.setOptionChecked("zgColor", Config.ZgColor || 1);
         window.main.setOptionChecked("fontColor", Config.FontColor || "#FFB8B8");
         window.main.setOptionChecked("fontName", Config.FontName || 1);
-
         window.main.setOptionChecked("mhColor", Config.FontTransparent || "0.3");
         window.main.settingPage.onUpdateConfig();
         window.main.printPage.onSettingComfirmed();
-
         // slider = $("#mhColor").slider()
     };
 }());
