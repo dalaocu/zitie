@@ -13,6 +13,31 @@
 - 修复各类模式的bug
 
 
-![settint](./doc/capture1.png)
+## 功能概述
+### 功能设置页面
 
-![print](./doc/capture2.png)
+![settint](./doc/1.png)
+
+### 正常输入
+![normalInput](./doc/2.png)
+
+### 正常输入加空行
+![normalInputAndSpaceLine](./doc/3.png)
+
+### 一字三描红
+![three](./doc/4.png)
+
+### 设置不同字体
+![font](./doc/5.png)
+
+### 设置不同的字格类型
+![setBG](./doc/6.png)
+
+### 设置不同的颜色
+![setColor](./doc/8.png)
+
+### 设置字体颜色深浅
+![setFontTs](./doc/9.png)
+
+### 打印
+![print](./doc/10.png)
