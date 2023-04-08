@@ -2,11 +2,11 @@
     'use strict';
 
     class Config {
-        static ModuleType = 5;
         static FontName = "1";
         static fonts = ["", "楷体", "阿里妈妈东方大楷 Regular", "Kaiti SC", "Microsoft YaHei"];
         static Title = "自定义字帖";
         static Content = "使用设置功能自定义内容";
+        static ModelType = "1";
         static ZgType = "1";
         static ZgColor = "1";
         static FontTransparent = "1";
@@ -17,7 +17,7 @@
         }
 
         static saveToStorage() {
-            window.localStorage.setItem("ModuleType", Config.ModuleType);
+            window.localStorage.setItem("ModelType", Config.ModelType);
             window.localStorage.setItem("FontName", Config.FontName);
             window.localStorage.setItem("Title", Config.Title);
             window.localStorage.setItem("Content", Config.Content);
@@ -27,7 +27,7 @@
         }
 
         static loadFromStorage() {
-            Config.ModuleType = window.localStorage.getItem("ModuleType") || Config.ModuleType;
+            Config.ModelType = window.localStorage.getItem("ModelType") || Config.ModelType;
             Config.FontName = window.localStorage.getItem("FontName") || Config.FontName;
             Config.Title = window.localStorage.getItem("Title") || Config.Title;
             Config.Content = window.localStorage.getItem("Content") || Config.Content;
@@ -119,10 +119,9 @@
         }
 
         onUpdateConfig() {
-            //Config.ModuleType = Number(this.getOptionElementValue("modelType"));
-            Config.ModuleType = 5;
             Config.Content = document.getElementById("inputContent").value;
             Config.Title = document.getElementById("inputTitle").value;
+            Config.ModelType = (this.getOptionElementValue("modelType"));
             Config.ZgType = (this.getOptionElementValue("zgType"));
             Config.ZgColor = (this.getOptionElementValue("zgColor"));
             Config.FontName = (this.getOptionElementValue("fontName"));
@@ -160,10 +159,40 @@
                 if (!this.isChinese(curChar)) {
                     continue;
                 }
-                this.addTeachLine(ulPrintContent, curChar);
-                this.addHanziLine(ulPrintContent, curChar);
+               this.renderLine(ulPrintContent, curChar);
             }
 
+        }
+
+        renderLine(target, strokes) {
+            if(Config.ModelType=="1"){
+                this.normalLine(target, strokes);
+            }
+            else if(Config.ModelType=="2"){
+                this.dualLine(target, strokes);
+            }
+            else if(Config.ModelType=="3"){
+                this.partLine(target, strokes);
+            }
+            else {
+                this.normalLine(target, strokes);
+            }
+        }
+
+        normalLine(ulPrintContent, curChar){
+            this.addTeachLine(ulPrintContent, curChar);
+            this.addHanziLine(ulPrintContent, curChar);
+        }
+
+        dualLine(ulPrintContent, curChar){
+            this.addTeachLine(ulPrintContent, curChar);
+            this.addHanziLine(ulPrintContent, curChar);
+            this.addEmptyHanziLine(ulPrintContent, curChar);
+        }
+
+        partLine(ulPrintContent, curChar){
+            this.addTeachLine(ulPrintContent, curChar);
+            this.add3HZLine(ulPrintContent, curChar);
         }
 
 
@@ -236,6 +265,35 @@
             }
             ulPrintContent.appendChild(hzLine)
         }
+
+        add3HZLine(ulPrintContent, curChar) {
+            let hzLine = document.createElement("li");
+            hzLine.className = 'hz-line';
+            for (let n = 0; n < 12; ++n) {
+                let hzSpan = document.createElement("div");
+                hzSpan.style.cssText = "background: url(img/bg" + Config.ZgType + Config.ZgColor + ".svg); ";
+                hzSpan.style.setProperty("color", Config.GetFontColor());
+                hzSpan.style.setProperty("font-family", Config.fonts[Config.FontName] );
+                if(n < 3) {
+                    hzSpan.innerText = curChar;
+                } else {
+                    hzSpan.innerText = "";
+                }
+                hzLine.appendChild(hzSpan)
+            }
+            ulPrintContent.appendChild(hzLine)
+        }
+
+        addEmptyHanziLine(ulPrintContent, curChar) {
+            let emptyLine = document.createElement("li");
+            emptyLine.className = 'hz-line';
+            for (let n = 0; n < 12; ++n) {
+                let hzSpan = document.createElement("span");
+                hzSpan.style.cssText = "background: url(img/bg" + Config.ZgType + Config.ZgColor + ".svg); ";
+                emptyLine.appendChild(hzSpan)
+            }
+            ulPrintContent.appendChild(emptyLine)
+        }
     }
 
     class Main {
@@ -263,6 +321,7 @@
         console.log("on page loaded");
         Config.loadFromStorage();
         window.main = new Main();
+        window.main.setOptionChecked("modelType", Config.ModelType || 1);
         window.main.setOptionChecked("zgType", Config.ZgType || 1);
         window.main.setOptionChecked("zgColor", Config.ZgColor || 1);
         window.main.setOptionChecked("fontColor", Config.FontColor || "#FFB8B8");
